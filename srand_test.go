@@ -12,11 +12,9 @@ func TestNew(t *testing.T) {
 	for _, l := range lengths {
 		if salt, err = New(l); err != nil {
 			t.Errorf("New(%d) failed: %s", l, err.Error())
-			t.Fail()
 		}
 		if len(salt) != l {
 			t.Errorf("New(%d) failed: len(salt) != %d", l, l)
-			t.Fail()
 		}
 		t.Logf("New(%d) = %s (%d)", l, salt, len(salt))
 	}

@@ -3,6 +3,7 @@ package secureRandom
 import (
 	crand "crypto/rand"
 	"encoding/base64"
+	"errors"
 	"math/big"
 	mrand "math/rand"
 	"strings"
@@ -49,6 +50,11 @@ func New(n int) (string, error) {
 	var randomBytes []byte // random bytes
 	var randomSize int     // random byte length
 	var err error          // error holder
+
+	// why ... just why
+	if n < 2 {
+		return "", errors.New("Insufficient length requested: 'n' must be >= 2")
+	}
 
 	// calculate random byte length needed to generate
 	// a base64 string of the requested length
