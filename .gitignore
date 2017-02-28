@@ -1,0 +1,7 @@
+.DS_*
+.Apple*
+.vimrc
+.idea
+*.iml
+.*~
+?
