@@ -13,9 +13,10 @@ import (
 // sanitized alphabet
 const saniBet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
-// package global random number generator
+// package random number generator
 var prng *mrand.Rand
 
+// init the package random number generator
 func init() {
 	var prime *big.Int // random secure prime
 	var err error      // error holder
