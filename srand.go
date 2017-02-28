@@ -4,6 +4,7 @@ import (
 	crand "crypto/rand"
 	"encoding/base64"
 	"errors"
+	"fmt"
 	"math/big"
 	mrand "math/rand"
 	"strings"
@@ -12,27 +13,33 @@ import (
 // sanitized alphabet
 const saniBet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
-// sanizize returns the passed string with all '-' and '_' characters replaced
-func sanitize(s string) (string, error) {
-	var alen = len(saniBet) // length of the sanitized alphabet
-	var prime *big.Int      // random secure prime
-	var split []string      // split input string
-	var err error           // error holder
+// package global random number generator
+var prng *mrand.Rand
 
-	// generate a 128 bit secure prime
-	if prime, err = crand.Prime(crand.Reader, 128); err != nil {
-		return s, err
+func init() {
+	var prime *big.Int // random secure prime
+	var err error      // error holder
+
+	// generate a 63 bit secure prime
+	if prime, err = crand.Prime(crand.Reader, 63); err != nil {
+		panic(fmt.Sprintf("secureRandom - failed to generate 63 bit prime seed: %s", err.Error()))
 	}
 
-	// seed random number generator
-	mrand.Seed(prime.Int64())
+	// initialize package random number generator
+	prng = mrand.New(mrand.NewSource(prime.Int64()))
+}
+
+// sanizize returns the passed string with all '-' and '_' characters replaced
+func sanitize(s string) string {
+	var alen = len(saniBet) // length of the sanitized alphabet
+	var split []string      // split input string
 
 	// split input string for looping
 	split = strings.Split(s, "")
 
 	// loop over split string and replace as needed
 	for idx, char := range split {
-		ridx := mrand.Intn(alen)
+		ridx := prng.Intn(alen)
 		if char == "-" {
 			split[idx] = saniBet[ridx : ridx+1]
 		}
@@ -42,7 +49,7 @@ func sanitize(s string) (string, error) {
 	}
 
 	// return the string - no error
-	return strings.Join(split, ""), nil
+	return strings.Join(split, "")
 }
 
 // New builds a new secure salt of the given length
@@ -69,5 +76,5 @@ func New(n int) (string, error) {
 	}
 
 	// return sanitized salt
-	return sanitize(base64.RawURLEncoding.EncodeToString(randomBytes))
+	return sanitize(base64.RawURLEncoding.EncodeToString(randomBytes)), nil
 }
