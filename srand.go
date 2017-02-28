@@ -8,15 +8,15 @@ import (
 	"strings"
 )
 
+// sanitized alphabet
+const saniBet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+
 // sanizize returns the passed string with all '-' and '_' characters replaced
 func sanitize(s string) (string, error) {
-	var alpha = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" // our sanitized alphabeb
-	var alen = 62                                                                // length of the above alphabet
-	var prime *big.Int                                                           // secure prime
-	var split []string                                                           // split input string
-	var char string                                                              // individual character
-	var idx, aidx int                                                            // string index
-	var err error                                                                // error holder
+	var alen = len(saniBet) // length of the sanitized alphabet
+	var prime *big.Int      // random secure prime
+	var split []string      // split input string
+	var err error           // error holder
 
 	// generate a 128 bit secure prime
 	if prime, err = crand.Prime(crand.Reader, 128); err != nil {
@@ -30,13 +30,13 @@ func sanitize(s string) (string, error) {
 	split = strings.Split(s, "")
 
 	// loop over split string and replace as needed
-	for idx, char = range split {
-		aidx = mrand.Intn(alen)
+	for idx, char := range split {
+		ridx := mrand.Intn(alen)
 		if char == "-" {
-			split[idx] = alpha[aidx : aidx+1]
+			split[idx] = saniBet[ridx : ridx+1]
 		}
 		if char == "_" {
-			split[idx] = alpha[aidx : aidx+1]
+			split[idx] = saniBet[ridx : ridx+1]
 		}
 	}
 

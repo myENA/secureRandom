@@ -5,8 +5,8 @@ import (
 )
 
 func TestNew(t *testing.T) {
-	var salt string                                                              // salt string
 	var lengths = []int{2, 3, 6, 7, 8, 15, 16, 23, 24, 31, 32, 63, 64, 127, 128} // test lengths
+	var salt string                                                              // salt string
 	var err error                                                                // error holder
 
 	for _, l := range lengths {
