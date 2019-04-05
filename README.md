@@ -2,7 +2,7 @@
 
 ## Summary
 
-Simple semi-secure random string generation for golang.
+Simple secure random string generation for golang.
 
 
 ## Usage
