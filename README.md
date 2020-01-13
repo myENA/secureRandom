@@ -28,4 +28,4 @@ func main() {
 }
 ```
 
-Please see the code and test case for more information.
+Please see the code, simple cli in `rands` and test case for more information.
