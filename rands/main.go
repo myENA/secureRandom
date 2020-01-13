@@ -2,19 +2,19 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"strconv"
 	"strings"
-	"math/rand"
 	"time"
 
 	srand "github.com/myENA/secureRandom"
 )
 
 func main() {
-	var err error    // error holder
-	var length = 16  // length with default
-	var rands string // random string
+	var err error             // error holder
+	var length = 16           // length with default
+	var rands string          // random string
 	var mixed strings.Builder // mixed string
 
 	// check arguments
@@ -35,7 +35,7 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	// semi-random mixed case
-	for _, char := range strings.Split(rands,"") {
+	for _, char := range strings.Split(rands, "") {
 		if rand.Intn(2) == 1 {
 			mixed.WriteString(strings.ToLower(char))
 		} else {
