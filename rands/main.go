@@ -12,10 +12,9 @@ import (
 )
 
 func main() {
-	var err error             // error holder
-	var length = 16           // length with default
-	var rands string          // random string
-	var mixed strings.Builder // mixed string
+	var err error    // error holder
+	var length = 16  // length with default
+	var rands string // random string
 
 	// check arguments
 	if len(os.Args) > 1 {
@@ -35,13 +34,12 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	// semi-random mixed case
-	for _, char := range strings.Split(rands, "") {
+	for idx, r := range rands {
 		if rand.Intn(2) == 1 {
-			mixed.WriteString(strings.ToLower(char))
-		} else {
-			mixed.WriteString(char)
+			// replace in string
+			rands = rands[:idx] + strings.ToLower(string(r)) + rands[idx+1:]
 		}
 	}
 
-	fmt.Printf("%s\n", mixed.String())
+	fmt.Printf("%s\n", rands)
 }
